@@ -20,10 +20,10 @@ spec:
         release: {{ .Release.Name }}
     spec:
       volumes:
-        - name: "localvol"
-{{- if .Values.persistence.local.enabled }}
+        - name: "datavol"
+{{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.local.existingclaim }}
+            claimName: {{ .Values.persistence.existingclaim }}
 {{- else }}
           emptyDir: {}
 {{- end }}
@@ -56,7 +56,7 @@ spec:
               port: 8000
             timeoutSeconds: 30
           volumeMounts:
-            - name: "localvol"
+            - name: "datavol"
               mountPath: "/data"
           resources:
 {{ toYaml .Values.resources | indent 12 }}
