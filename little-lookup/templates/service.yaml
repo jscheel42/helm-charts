@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "little-lookup.fullname" . }}
+  labels:
+    app: {{ template "little-lookup.name" . }}
+    chart: {{ template "little-lookup.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+{{- if eq .Values.service.type "NodePort" }}
+  type: NodePort
+  ports:
+    - port: 8000
+      nodePort: {{ .Values.service.port }}
+{{- else }}
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8000
+      protocol: TCP
+      name: http
+{{- end }}
+  selector:
+    app: {{ template "little-lookup.name" . }}
+    release: {{ .Release.Name }}

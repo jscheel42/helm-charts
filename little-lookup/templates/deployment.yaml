@@ -1,0 +1,74 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "little-lookup.fullname" . }}
+  labels:
+    app: {{ template "little-lookup.name" . }}
+    chart: {{ template "little-lookup.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "little-lookup.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "little-lookup.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        - name: "localvol"
+{{- if .Values.persistence.local.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.local.existingclaim }}
+{{- else }}
+          emptyDir: {}
+{{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: LITTLE_LOOKUP_DATABASE
+              value: {{ .Values.db.path }}
+{{- if .Values.debug.enabled }}
+            - name: RUST_BACKTRACE
+              value: "1"
+{{- end }}
+{{- if .Values.env }}
+{{ toYaml .Values.env | indent 12 }}
+{{- end }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            timeoutSeconds: 30
+          volumeMounts:
+            - name: "localvol"
+              mountPath: "/data"
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
