@@ -11,13 +11,13 @@ spec:
 {{- if eq .Values.service.type "NodePort" }}
   type: NodePort
   ports:
-    - port: 8000
+    - port: 8088
       nodePort: {{ .Values.service.port }}
 {{- else }}
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 8000
+      targetPort: 8088
       protocol: TCP
       name: http
 {{- end }}
