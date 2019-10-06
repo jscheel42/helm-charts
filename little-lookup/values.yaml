@@ -11,6 +11,11 @@ env: {}
 db:
   path: "/data/default.db"
 
+psk:
+  enabled: false
+  value: ""
+  secretName: little-lookup-psk
+
 debug: false
 
 service:

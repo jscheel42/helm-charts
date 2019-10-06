@@ -27,6 +27,11 @@ spec:
 {{- else }}
           emptyDir: {}
 {{- end }}
+{{- if .Values.psk.enabled }}
+        - name: pskvol
+          secret:
+            secretName: {{ .Values.psk.secretName }}
+{{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -37,6 +42,13 @@ spec:
 {{- if .Values.debug.enabled }}
             - name: RUST_BACKTRACE
               value: "1"
+{{- end }}
+{{- if .Values.psk.enabled }}
+            - name: LITTLE_LOOKUP_PSK
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.psk.value }}
+                  key: psk
 {{- end }}
 {{- if .Values.env }}
 {{ toYaml .Values.env | indent 12 }}
