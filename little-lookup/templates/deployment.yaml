@@ -47,7 +47,7 @@ spec:
             - name: LITTLE_LOOKUP_PSK
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.psk.value }}
+                  name: {{ .Values.psk.secretName }}
                   key: psk
 {{- end }}
 {{- if .Values.env }}
