@@ -21,12 +21,12 @@ spec:
     spec:
       securityContext:
 {{ toYaml .Values.securityContext | indent 8 }}
-{{- if .Values.psk.enabled }}
       volumes:
         - name: pgpassvol
           mode: 600
           secret:
             secretName: {{ .Values.pgpassSecretName }}
+{{- if .Values.psk.enabled }}
         - name: pskvol
           secret:
             secretName: {{ .Values.psk.secretName }}
