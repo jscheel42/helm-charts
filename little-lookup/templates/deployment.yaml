@@ -35,7 +35,7 @@ spec:
             - name: LITTLE_LOOKUP_POOL_SIZE_PER_WORKER
               value: {{ .Values.db.pool_size_per_worker }}
             - name: LITTLE_LOOKUP_WORKER_NUM
-              value: {{ .Values.db.worker_num }}
+              value: {{ .Values.worker_num }}
 {{- if .Values.debug }}
             - name: RUST_BACKTRACE
               value: "1"
