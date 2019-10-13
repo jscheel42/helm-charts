@@ -19,8 +19,6 @@ spec:
         app: {{ template "little-lookup.name" . }}
         release: {{ .Release.Name }}
     spec:
-      securityContext:
-{{ toYaml .Values.securityContext | indent 8 }}
       volumes:
         - name: pgpassvol
           mode: 0600
@@ -35,6 +33,8 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+{{ toYaml .Values.securityContext | indent 12 }}
           env:
             - name: PGPASSFILE
               value: "/pgpass/.pgpass"
