@@ -23,7 +23,7 @@ spec:
 {{ toYaml .Values.securityContext | indent 8 }}
       volumes:
         - name: pgpassvol
-          mode: 600
+          mode: 0600
           secret:
             secretName: {{ .Values.pgpassSecretName }}
 {{- if .Values.psk.enabled }}
