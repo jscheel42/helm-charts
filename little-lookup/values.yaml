@@ -16,6 +16,8 @@ db:
   dbname: ll
   pool_size_per_worker: 5
 
+pgpassSecretName: little-lookup-pgpass
+
 worker_num: 4
 
 dbsidecar:

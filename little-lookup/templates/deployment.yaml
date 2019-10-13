@@ -66,6 +66,10 @@ spec:
             timeoutSeconds: 30
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+          - name: pgpassvol
+            mountPath: "/pgpass"
+            readOnly: true
 {{- if .Values.dbsidecar.enabled }}
         - name: pgsidecar
           image: "{{ .Values.dbsidecar.image.repository }}:{{ .Values.dbsidecar.image.tag }}"
@@ -80,7 +84,11 @@ spec:
           resources:
 {{ toYaml .Values.dbsidecar.resources | indent 12 }}
 {{- end }}
-    {{- with .Values.nodeSelector }}
+      volumes:
+        - name: pgpassvol 
+          secret:
+            secretName: {{ .Values.pgpassSecretName }}
+{{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
