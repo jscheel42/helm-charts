@@ -19,15 +19,8 @@ spec:
         app: {{ template "little-lookup.name" . }}
         release: {{ .Release.Name }}
     spec:
-      volumes:
-        - name: "datavol"
-{{- if .Values.persistence.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingclaim }}
-{{- else }}
-          emptyDir: {}
-{{- end }}
 {{- if .Values.psk.enabled }}
+      volumes:
         - name: pskvol
           secret:
             secretName: {{ .Values.psk.secretName }}
@@ -38,7 +31,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: LITTLE_LOOKUP_DATABASE
-              value: {{ .Values.db.path }}
+              value: postgres://{{ .Values.db.username }}:{{ .Values.db.password }}@{{ .Values.db.hostname }}:{{ .Values.db.port }}/{{ .Values.db.dbname }}
 {{- if .Values.debug.enabled }}
             - name: RUST_BACKTRACE
               value: "1"
@@ -67,11 +60,22 @@ spec:
               path: /
               port: 8088
             timeoutSeconds: 30
-          volumeMounts:
-            - name: "datavol"
-              mountPath: "/data"
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+{{- if .Values.dbsidecar.enabled }}
+        - name: pgsidecar
+          image: "{{ .Values.dbsidecar.image.repository }}:{{ .Values.dbsidecar.image.tag }}"
+          imagePullPolicy: {{ .Values.dbsidecar.image.pullPolicy }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.dbsidecar.username }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.dbsidecar.password }}
+            - name: POSTGRES_DB
+              value: {{ .Values.dbsidecar.dbname }}
+          resources:
+{{ toYaml .Values.dbsidecar.resources | indent 12 }}
+{{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

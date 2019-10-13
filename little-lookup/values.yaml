@@ -9,7 +9,28 @@ image:
 env: {}
 
 db:
-  path: "/data/default.db"
+  username: docker
+  password: docker
+  hostname: localhost
+  port: 5432
+  dbname: ll
+
+dbsidecar:
+  enabled: false
+  image: 
+    repository: postgres
+    tag: 12
+    pullPolicy: Always
+  username: docker
+  password: docker
+  dbname: ll
+  resources:
+    requests:
+      cpu: 1
+      memory: 500Mi
+    limits:
+      cpu: 1
+      memory: 1000Mi
 
 psk:
   enabled: false
@@ -29,17 +50,13 @@ ingress:
   path: /
   hosts: []
 
-persistence:
-  enabled: false
-  existingclaim: mypvc
-
 resources:
   requests:
-    memory: 128Mi
     cpu: 50m
+    memory: 128Mi
   limits:
-    memory: 512Mi
     cpu: 500m
+    memory: 2048Mi
 
 nodeSelector: {}
 
