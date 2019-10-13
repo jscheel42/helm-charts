@@ -3,16 +3,16 @@ entries:
   little-lookup:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2019-10-13T16:42:59.165553601-07:00"
+    created: "2019-10-13T16:52:14.35636034-07:00"
     description: Little Lookup (Simple K/V Store)
-    digest: e61bd4dc72680283e1b74a4b4a60204e1257299b7c89dbbed4616912217bc6de
+    digest: 0f264e91fad1f931b26dcdb7dc1e15276ddaf9e91bd413db5e6cfb324b180dd1
     name: little-lookup
     urls:
     - https://jscheel42.github.io/helm-charts/little-lookup-0.3.0.tgz
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2019-10-13T16:42:59.165359724-07:00"
+    created: "2019-10-13T16:52:14.356177706-07:00"
     description: Little Lookup (Simple K/V Store)
     digest: 83a06045181f2c1f088370630ac50d91bdbf98a213e44c1e83f7771632ad90ca
     name: little-lookup
@@ -21,11 +21,11 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2019-10-13T16:42:59.165188475-07:00"
+    created: "2019-10-13T16:52:14.356007435-07:00"
     description: Little Lookup (Simple K/V Store)
     digest: 6340d34e6c4159d3e1c5ae218ae10cff867bf439e1c59326a2206461882eadc3
     name: little-lookup
     urls:
     - https://jscheel42.github.io/helm-charts/little-lookup-0.1.0.tgz
     version: 0.1.0
-generated: "2019-10-13T16:42:59.164933837-07:00"
+generated: "2019-10-13T16:52:14.355765647-07:00"
