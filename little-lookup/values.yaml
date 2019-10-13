@@ -14,6 +14,9 @@ db:
   hostname: localhost
   port: 5432
   dbname: ll
+  pool_size_per_worker: 5
+
+worker_num: 4
 
 dbsidecar:
   enabled: false
