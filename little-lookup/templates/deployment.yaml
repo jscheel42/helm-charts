@@ -36,6 +36,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: PGPASSFILE
+              value: "/pgpass/.pgpass"
             - name: LITTLE_LOOKUP_DATABASE
               value: "postgres://{{ .Values.db.username }}@{{ .Values.db.hostname }}:{{ .Values.db.port }}/{{ .Values.db.dbname }}"
             - name: LITTLE_LOOKUP_POOL_SIZE_PER_WORKER
