@@ -19,8 +19,14 @@ spec:
         app: {{ template "little-lookup.name" . }}
         release: {{ .Release.Name }}
     spec:
+      securityContext:
+{{ toYaml .Values.securityContext | indent 8 }}
 {{- if .Values.psk.enabled }}
       volumes:
+        - name: pgpassvol
+          mode: 600
+          secret:
+            secretName: {{ .Values.pgpassSecretName }}
         - name: pskvol
           secret:
             secretName: {{ .Values.psk.secretName }}
@@ -84,10 +90,6 @@ spec:
           resources:
 {{ toYaml .Values.dbsidecar.resources | indent 12 }}
 {{- end }}
-      volumes:
-        - name: pgpassvol 
-          secret:
-            secretName: {{ .Values.pgpassSecretName }}
 {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
