@@ -31,11 +31,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: LITTLE_LOOKUP_DATABASE
-              value: postgres://{{ .Values.db.username }}:{{ .Values.db.password }}@{{ .Values.db.hostname }}:{{ .Values.db.port }}/{{ .Values.db.dbname }}
+              value: "postgres://{{ .Values.db.username }}:{{ .Values.db.password }}@{{ .Values.db.hostname }}:{{ .Values.db.port }}/{{ .Values.db.dbname }}"
             - name: LITTLE_LOOKUP_POOL_SIZE_PER_WORKER
-              value: {{ .Values.db.pool_size_per_worker }}
+              value: "{{ .Values.db.pool_size_per_worker }}"
             - name: LITTLE_LOOKUP_WORKER_NUM
-              value: {{ .Values.worker_num }}
+              value: "{{ .Values.worker_num }}"
 {{- if .Values.debug }}
             - name: RUST_BACKTRACE
               value: "1"
