@@ -32,7 +32,7 @@ spec:
           env:
             - name: LITTLE_LOOKUP_DATABASE
               value: postgres://{{ .Values.db.username }}:{{ .Values.db.password }}@{{ .Values.db.hostname }}:{{ .Values.db.port }}/{{ .Values.db.dbname }}
-{{- if .Values.debug.enabled }}
+{{- if .Values.debug }}
             - name: RUST_BACKTRACE
               value: "1"
 {{- end }}
