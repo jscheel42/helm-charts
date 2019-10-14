@@ -29,8 +29,6 @@ spec:
           secret:
             secretName: {{ .Values.psk.secretName }}
 {{- end }}
-      securityContext:
-{{ toYaml .Values.securityContext | indent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -38,7 +36,7 @@ spec:
           securityContext:
 {{ toYaml .Values.securityContext | indent 12 }}
           env:
-            - name: PGPASSFILE
+            - name: PGPASS_FILEPATH
               value: "/pgpass/.pgpass"
             - name: LITTLE_LOOKUP_DATABASE
               value: "postgres://{{ .Values.db.username }}@{{ .Values.db.hostname }}:{{ .Values.db.port }}/{{ .Values.db.dbname }}"
