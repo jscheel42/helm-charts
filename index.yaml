@@ -3,7 +3,7 @@ entries:
   little-lookup:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2019-10-19T19:19:18.645477831-07:00"
+    created: "2019-10-20T14:16:53.508870593-07:00"
     description: Little Lookup (Simple K/V Store)
     digest: 613556139d2dd6880f132359274ecb1c4e3156d548fc9f844ca018d1c04364fa
     name: little-lookup
@@ -12,7 +12,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2019-10-19T19:19:18.645096854-07:00"
+    created: "2019-10-20T14:16:53.508560754-07:00"
     description: Little Lookup (Simple K/V Store)
     digest: df37ae30eb66be6ba5b5378f6c1ab8abf3f72c955dd37df7faaf8151ad2462cf
     name: little-lookup
@@ -21,7 +21,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2019-10-19T19:19:18.644770076-07:00"
+    created: "2019-10-20T14:16:53.508276403-07:00"
     description: Little Lookup (Simple K/V Store)
     digest: 83a06045181f2c1f088370630ac50d91bdbf98a213e44c1e83f7771632ad90ca
     name: little-lookup
@@ -30,11 +30,25 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2019-10-19T19:19:18.644437949-07:00"
+    created: "2019-10-20T14:16:53.507985488-07:00"
     description: Little Lookup (Simple K/V Store)
     digest: 6340d34e6c4159d3e1c5ae218ae10cff867bf439e1c59326a2206461882eadc3
     name: little-lookup
     urls:
     - https://jscheel42.github.io/helm-charts/little-lookup-0.1.0.tgz
     version: 0.1.0
-generated: "2019-10-19T19:19:18.643989362-07:00"
+  vault:
+  - apiVersion: v1
+    created: "2019-10-20T14:16:53.509949618-07:00"
+    description: Install and configure Vault on Kubernetes.
+    digest: 9df6f0ceff70ade163648696a90309c60b2f9584e4d2fe588a0a140cb2dfa575
+    home: https://www.vaultproject.io
+    icon: https://github.com/hashicorp/vault/raw/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
+    name: vault
+    sources:
+    - https://github.com/hashicorp/vault
+    - https://github.com/hashicorp/vault-helm
+    urls:
+    - https://jscheel42.github.io/helm-charts/vault-0.1.2.tgz
+    version: 0.1.2
+generated: "2019-10-20T14:16:53.507581517-07:00"
