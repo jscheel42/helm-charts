@@ -41,11 +41,6 @@ dbsidecar:
       cpu: 1
       memory: 1000Mi
 
-# psk:
-#   enabled: false
-#   value: ""
-#   secretName: pg-push-psk
-
 debug: false
 
 service:

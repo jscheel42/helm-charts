@@ -24,11 +24,6 @@ spec:
           mode: 0600
           secret:
             secretName: {{ .Values.pgpassSecretName }}
-{{- if .Values.psk.enabled }}
-        - name: pskvol
-          secret:
-            secretName: {{ .Values.psk.secretName }}
-{{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
