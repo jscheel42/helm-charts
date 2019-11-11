@@ -42,6 +42,8 @@ dbsidecar:
       memory: 1000Mi
 
 debug: false
+livenessProbe: true
+readinessProbe: true
 
 service:
   type: ClusterIP
