@@ -1,0 +1,99 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "pg-push.fullname" . }}
+  labels:
+    app: {{ template "pg-push.name" . }}
+    chart: {{ template "pg-push.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "pg-push.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "pg-push.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        - name: pgpassvol
+          mode: 0600
+          secret:
+            secretName: {{ .Values.pgpassSecretName }}
+{{- if .Values.psk.enabled }}
+        - name: pskvol
+          secret:
+            secretName: {{ .Values.psk.secretName }}
+{{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+{{ toYaml .Values.securityContext | indent 12 }}
+          env:
+            - name: PGPASS_FILEPATH
+              value: "/pgpass/.pgpass"
+            - name: PG_PUSH_DATABASE
+              value: "postgres://{{ .Values.db.username }}@{{ .Values.db.hostname }}:{{ .Values.db.port }}/{{ .Values.db.dbname }}"
+            - name: PG_PUSH_POOL_SIZE_PER_WORKER
+              value: "{{ .Values.db.pool_size_per_worker }}"
+            - name: PG_PUSH_WORKER_NUM
+              value: "{{ .Values.worker_num }}"
+{{- if .Values.debug }}
+            - name: RUST_BACKTRACE
+              value: "1"
+{{- end }}
+{{- if .Values.env }}
+{{ toYaml .Values.env | indent 12 }}
+{{- end }}
+          ports:
+            - name: http
+              containerPort: 8088
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8088
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8088
+            timeoutSeconds: 30
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          volumeMounts:
+          - name: pgpassvol
+            mountPath: "/pgpass"
+            readOnly: true
+{{- if .Values.dbsidecar.enabled }}
+        - name: pgsidecar
+          image: "{{ .Values.dbsidecar.image.repository }}:{{ .Values.dbsidecar.image.tag }}"
+          imagePullPolicy: {{ .Values.dbsidecar.image.pullPolicy }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.dbsidecar.username }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.dbsidecar.password }}
+            - name: POSTGRES_DB
+              value: {{ .Values.dbsidecar.dbname }}
+          resources:
+{{ toYaml .Values.dbsidecar.resources | indent 12 }}
+{{- end }}
+{{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

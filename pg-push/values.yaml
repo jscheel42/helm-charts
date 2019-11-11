@@ -1,0 +1,74 @@
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+replicaCount: 1
+
+image:
+  repository: jscheel42/pg-push
+  tag: latest
+  pullPolicy: Always
+
+env: {}
+
+db:
+  username: docker
+  password: docker
+  hostname: localhost
+  port: 5432
+  dbname: pgpush
+  pool_size_per_worker: 5
+
+pgpassSecretName: pg-push-pgpass
+
+worker_num: 4
+
+dbsidecar:
+  enabled: false
+  image: 
+    repository: postgres
+    tag: 12
+    pullPolicy: Always
+  username: docker
+  password: docker
+  dbname: pgpush
+  resources:
+    requests:
+      cpu: 1
+      memory: 500Mi
+    limits:
+      cpu: 1
+      memory: 1000Mi
+
+# psk:
+#   enabled: false
+#   value: ""
+#   secretName: pg-push-psk
+
+debug: false
+
+service:
+  type: ClusterIP
+  port: 8088
+
+ingress:
+  enabled: false
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  path: /
+  hosts: []
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 2048Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
